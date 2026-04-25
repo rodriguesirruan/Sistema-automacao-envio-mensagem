@@ -1,0 +1,22 @@
+{
+  "name": "whatsapp-produtos-automacao",
+  "version": "1.0.0",
+  "description": "Sistema de automacao de envio de produtos para WhatsApp com painel administrativo.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "node-cron": "^4.2.1",
+    "qrcode-terminal": "^0.12.0",
+    "sql.js": "^1.13.0"
+  },
+  "overrides": {
+    "protobufjs": "7.5.5"
+  }
+}

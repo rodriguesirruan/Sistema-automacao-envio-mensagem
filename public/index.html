@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Admin | WhatsApp Produtos</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-copy">
+        <span class="eyebrow">Dashboard</span>
+        <h1>Painel de produtos e agendamentos</h1>
+        <p class="topbar-subtitle">Analise rapida de produtos, disparos e status do WhatsApp.</p>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="status-pill" id="whatsapp-status">Verificando WhatsApp...</div>
+        <form action="/logout" method="POST">
+          <button type="submit" class="btn-secondary">Sair</button>
+        </form>
+      </div>
+    </header>
+
+<section class="stats-grid">
+      <article class="stat-card">
+        <span class="stat-label">Produtos</span>
+        <strong class="stat-value" id="stat-products">0</strong>
+        <span class="stat-foot">Catalogo ativo</span>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Pendentes</span>
+        <strong class="stat-value" id="stat-pending">0</strong>
+        <span class="stat-foot">Aguardando envio</span>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Enviados</span>
+        <strong class="stat-value" id="stat-sent">0</strong>
+        <span class="stat-foot">Historico confirmado</span>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Falhas</span>
+        <strong class="stat-value" id="stat-failed">0</strong>
+        <span class="stat-foot">Exigem revisao</span>
+      </article>
+    </section>
+
+
+    <main class="dashboard">
+      <section class="panel panel-form">
+        <div class="panel-heading">
+          <div>
+            <span class="section-tag">Produtos</span>
+            <h2>Cadastro de produtos</h2>
+          </div>
+        </div>
+
+        <form id="product-form" class="form-grid">
+          <label>
+            <span>Tipo</span>
+            <select name="tipo" id="product-type" required>
+              <option value="novo">Novo produto</option>
+              <option value="loja">Produto ja na loja</option>
+            </select>
+          </label>
+          <label>
+            <span>Nome</span>
+            <input type="text" name="nome" placeholder="Nome do produto" required />
+          </label>
+
+          <label>
+            <span>Preco antigo</span>
+            <input type="number" name="preco_antigo" placeholder="429.90" min="0" step="0.01" />
+          </label>
+
+          <label>
+            <span>Preco atual</span>
+            <input type="number" name="preco_atual" placeholder="49.90" min="0" step="0.01" required />
+          </label>
+
+          <div id="store-fields" class="form-grid">
+            <label>
+              <span>Desconto</span>
+              <input type="text" name="desconto" placeholder="80% OFF" />
+            </label>
+
+            <label>
+              <span>Ativação</span>
+              <input type="text" name="ativacao" placeholder="Steam PC" />
+            </label>
+
+            <label>
+              <span>DLCs</span>
+              <input type="text" name="dlcs" placeholder="Nao possui" />
+            </label>
+
+            <label>
+              <span>Estoque / chamada</span>
+              <input type="text" name="estoque" placeholder="Aproveite enquanto tem estoque!" />
+            </label>
+          </div>
+
+          <label>
+            <span>Link</span>
+            <input type="url" name="link" placeholder=" " required />
+          </label>
+
+          <label>
+            <span>Imagem</span>
+            <input type="url" name="imagem" placeholder=" " required />
+          </label>
+
+          <button type="submit" class="btn-primary">Adicionar produto</button>
+        </form>
+      </section>
+
+      <section class="panel panel-schedule">
+        <div class="panel-heading">
+          <div>
+            <span class="section-tag">Agendamento</span>
+            <h2>Programar envio</h2>
+          </div>
+        </div>
+
+        <form id="schedule-form" class="form-grid compact-grid">
+          <label>
+            <span>Produto</span>
+            <select name="produto_id" id="schedule-product" required></select>
+          </label>
+
+          <label>
+            <span>Horario</span>
+            <input type="time" name="horario" required />
+          </label>
+
+          <button type="submit" class="btn-primary">Salvar agendamento</button>
+        </form>
+      </section>
+
+      <section class="panel panel-catalog">
+        <div class="panel-heading">
+          <div>
+            <span class="section-tag">Catálogo</span>
+            <h2>Produtos cadastrados</h2>
+          </div>
+        </div>
+        <div id="products-list" class="cards-grid"></div>
+      </section>
+
+      <section class="panel panel-history">
+        <div class="panel-heading">
+          <div>
+            <span class="section-tag">Fila</span>
+            <h2>Agendamentos e Historico</h2>
+          </div>
+        </div>
+         <div class="schedule-filters" id="schedule-filters">
+          <button type="button" class="filter-btn active" data-filter="todos">Todos</button>
+          <button type="button" class="filter-btn" data-filter="pendente">Pendentes</button>
+          <button type="button" class="filter-btn" data-filter="enviado">Enviados</button>
+          <button type="button" class="filter-btn" data-filter="falha">Falhas</button>
+        </div>
+        <div id="schedules-list" class="schedule-list"></div>
+      </section>
+    </main>
+ <div class="modal-backdrop" id="product-modal" hidden>
+      <div class="modal-card">
+        <div class="modal-header">
+          <div>
+            <span class="section-tag">Produto</span>
+            <h2 id="modal-title">Detalhes do produto</h2>
+          </div>
+          <button type="button" class="icon-btn" id="modal-close" aria-label="Fechar">x</button>
+        </div>
+
+        <div class="modal-body" id="modal-body"></div>
+      </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

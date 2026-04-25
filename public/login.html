@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Painel WhatsApp</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body class="login-body">
+    <main class="login-wrapper">
+      <section class="login-card">
+        <span class="eyebrow">Painel administrativo</span>
+        <h1>Envio automático para WhatsApp</h1>
+        <p class="muted">
+          Entre com o usuário fixo do sistema para cadastrar produtos e criar agendamentos.
+        </p>
+
+        <form action="/login" method="POST" class="form-grid">
+          <label>
+            <span>Usuário</span>
+            <input type="text" name="usuario" placeholder=" " required />
+          </label>
+
+          <label>
+            <span>Senha</span>
+            <input type="password" name="senha" placeholder=" " required />
+          </label>
+
+          <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+
+        <p class="error-message" id="login-error"></p>
+      </section>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('erro') === '1') {
+        document.getElementById('login-error').textContent = 'Usuário ou senha inválidos.';
+      }
+    </script>
+  </body>
+</html>

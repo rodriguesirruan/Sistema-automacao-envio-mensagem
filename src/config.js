@@ -1,8 +1,8 @@
 module.exports = {
   port: 3000,
-  adminUser: 'belgo',
-  adminPassword: 'mica',
+  adminUser: 'LOGIN',
+  adminPassword: 'SENHA',
   sessionSecret: 'painel-whatsapp-produtos-seguro',
-  whatsappGroupId: '120363402798574293@g.us',
+  whatsappGroupId: 'CODIGO_DO_GRUPO@g.us',
   timezone: 'America/Sao_Paulo'
 };
